@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Iron Log">
+<meta name="theme-color" content="#0a0a08">
+<title>Iron Log</title>
+<style>
+:root{
+  --bg:#0a0a08;--bg2:#14140f;--bg3:#1a1a14;--bg4:#1f1f18;
+  --bd:#2a2a20;--bd2:#3a3a2c;
+  --t:#f5f1e0;--t2:#a8a497;--t3:#6a6660;--t4:#3a3a32;
+  --g:#5fb37a;--gs:#7dd49a;--gbg:#0e2418;--gbd:#1f4a30;
+  --o:#ffc647;--os:#ffd76e;--obg:#2a1f00;--obd:#4a3a08;
+  --red:#d46060;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
+html,body{background:var(--bg);color:var(--t);font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;font-size:15px;min-height:100vh;overscroll-behavior:none;}
+#app{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:100px;}
+.hdr{background:linear-gradient(180deg,#161611,#0a0a08);border-bottom:1px solid var(--bd);padding:16px 16px 14px;position:sticky;top:0;z-index:100;}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;}
+.brand{display:flex;align-items:center;gap:10px;}
+.bmark{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#2a4a32,#1a3a22);border:1px solid #3a5a42;display:flex;align-items:center;justify-content:center;font-family:Impact,'Arial Narrow',sans-serif;font-size:20px;color:var(--gs);}
+.btitle{font-family:Impact,'Arial Narrow',sans-serif;font-size:26px;letter-spacing:4px;line-height:1;}
+.bsub{font-size:10px;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-top:3px;font-weight:600;}
+.bkbtn{background:var(--bg4);border:1px solid var(--bd2);color:var(--t2);padding:9px 13px;border-radius:9px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;letter-spacing:1px;display:flex;align-items:center;gap:5px;}
+.bkbtn:active{transform:scale(0.95);}
+.nav{display:flex;gap:4px;padding:4px;background:var(--bg2);border:1px solid var(--bd);border-radius:11px;margin-top:12px;}
+.nbtn{flex:1;padding:10px 0;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;border:none;background:transparent;color:var(--t4);transition:all 0.15s;}
+.nbtn.on{background:var(--g);color:#0a1a0e;box-shadow:0 2px 8px rgba(95,179,122,0.3);}
+.qbar{padding:14px 16px 12px;border-bottom:1px solid var(--bd);}
+.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.qbtn{padding:13px 0;border-radius:11px;font-family:Impact,'Arial Narrow',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;border:1px solid var(--bd);background:var(--bg2);color:var(--t3);transition:all 0.15s;text-align:center;}
+.qbtn:active{transform:scale(0.95);}
+.qdts{font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;font-size:9px;letter-spacing:1px;color:var(--t4);margin-top:3px;font-weight:500;display:block;}
+.qbtn.on{color:#fff;}
+.qbtn.on .qdts{color:rgba(255,255,255,0.65);}
+.qbtn.q1.on{background:#4a8a5e;border-color:#4a8a5e;box-shadow:0 4px 14px rgba(74,138,94,0.35);}
+.qbtn.q2.on{background:#3a7aa0;border-color:#3a7aa0;box-shadow:0 4px 14px rgba(58,122,160,0.35);}
+.qbtn.q3.on{background:#c87a3c;border-color:#c87a3c;box-shadow:0 4px 14px rgba(200,122,60,0.35);}
+.qbtn.q4.on{background:#a05a8a;border-color:#a05a8a;box-shadow:0 4px 14px rgba(160,90,138,0.35);}
+.wbar{padding:16px 16px 12px;border-bottom:1px solid var(--bd);}
+.slbl{font-size:11px;letter-spacing:2.5px;color:var(--t3);text-transform:uppercase;margin-bottom:10px;font-weight:700;display:flex;justify-content:space-between;align-items:center;}
+.winfo{font-size:10px;color:var(--t4);font-family:'Courier New',monospace;}
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.wbtn{aspect-ratio:1;min-height:40px;border-radius:9px;font-family:Impact,'Arial Narrow',sans-serif;font-size:17px;cursor:pointer;border:1px solid var(--bd);background:var(--bg2);color:var(--t3);transition:all 0.15s;display:flex;align-items:center;justify-content:center;position:relative;}
+.wbtn:active{transform:scale(0.93);}
+.wbtn.hd{background:var(--bg4);color:var(--t2);border-color:var(--bd2);}
+.wbtn.hd::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--g);}
+.wbtn.dim{opacity:0.4;}
+.wbtn.on{color:#fff;}
+.wbtn.on::after{background:#fff !important;opacity:0.7;}
+.wbtn.on.q1{background:#4a8a5e;border-color:#4a8a5e;box-shadow:0 4px 12px rgba(74,138,94,0.4);}
+.wbtn.on.q2{background:#3a7aa0;border-color:#3a7aa0;box-shadow:0 4px 12px rgba(58,122,160,0.4);}
+.wbtn.on.q3{background:#c87a3c;border-color:#c87a3c;box-shadow:0 4px 12px rgba(200,122,60,0.4);}
+.wbtn.on.q4{background:#a05a8a;border-color:#a05a8a;box-shadow:0 4px 12px rgba(160,90,138,0.4);}
+.dtabs{display:flex;gap:7px;padding:12px 16px;overflow-x:auto;border-bottom:1px solid var(--bd);}
+.dtabs::-webkit-scrollbar{display:none;}
+.dtab{flex-shrink:0;padding:11px 16px;border-radius:11px;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--bd);background:var(--bg2);color:var(--t3);white-space:nowrap;transition:all 0.15s;min-height:46px;display:flex;align-items:center;gap:7px;}
+.dtab:active{transform:scale(0.95);}
+.dnum{font-family:Impact,'Arial Narrow',sans-serif;font-size:17px;opacity:0.65;}
+.dtab.on{color:#fff;}
+.dtab.on .dnum{opacity:1;}
+.pbanner{margin:14px 16px 0;padding:13px 15px;border-radius:13px;background:var(--bg2);display:flex;justify-content:space-between;align-items:center;border:1px solid var(--bd);position:relative;overflow:hidden;}
+.ptag{font-family:Impact,'Arial Narrow',sans-serif;font-size:15px;letter-spacing:2.5px;line-height:1;}
+.pwk{font-size:11px;color:var(--t3);margin-top:4px;font-family:'Courier New',monospace;}
+.ptip{font-size:11px;color:var(--t3);text-align:right;max-width:155px;line-height:1.45;}
+.pref{margin:12px 16px 0;background:var(--bg2);border-radius:13px;overflow:hidden;border:1px solid var(--bd);}
+.ptitle{padding:11px 15px 9px;font-size:11px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;}
+.prow{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;border-bottom:1px solid #161610;}
+.prow:last-child{border-bottom:none;}
+.pname{font-size:13px;color:var(--t2);flex:1;font-weight:500;}
+.pbest{font-size:13px;color:var(--t2);font-weight:700;font-family:'Courier New',monospace;}
+.pempty{padding:13px 15px;text-align:center;font-size:12px;color:var(--t4);font-style:italic;}
+.cards{padding:16px;display:flex;flex-direction:column;gap:12px;}
+.card{border-radius:16px;overflow:hidden;border:1px solid var(--bd);background:var(--bg2);}
+.card.traps{background:linear-gradient(180deg,#112418,#14140f);border-color:#2a4a30;}
+.card.abs{background:linear-gradient(180deg,#1d1226,#14140f);border-color:#3a2848;}
+.chdr{padding:14px 16px 11px;border-bottom:1px solid var(--bd);}
+.exnm{font-family:Impact,'Arial Narrow',sans-serif;font-size:21px;letter-spacing:0.5px;color:var(--t);line-height:1.1;}
+.exmeta{display:flex;gap:9px;align-items:center;margin-top:7px;flex-wrap:wrap;}
+.extgt{font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:5px;font-family:'Courier New',monospace;}
+.exnt{font-size:11px;color:var(--t3);font-style:italic;flex:1;}
+.btag{font-size:9px;padding:2px 6px;border-radius:4px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;}
+.btag.tr{background:#1f3a26;color:var(--gs);}
+.btag.ab{background:#2a1a3a;color:#c8a8e8;}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);background:var(--bd);gap:1px;}
+.scol{padding:12px 7px 10px;background:var(--bg2);}
+.card.traps .scol{background:#131e16;}
+.card.abs .scol{background:#1a1024;}
+.scol.dis{background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;color:var(--t4);font-size:16px;min-height:90px;}
+.scol.fail{background:linear-gradient(180deg,var(--bg2),rgba(212,96,96,0.05));}
+.card.traps .scol.fail{background:linear-gradient(180deg,#131e16,rgba(212,96,96,0.06));}
+.card.abs .scol.fail{background:linear-gradient(180deg,#1a1024,rgba(212,96,96,0.06));}
+.slb2{font-size:10px;color:var(--t3);text-align:center;margin-bottom:7px;letter-spacing:1.5px;font-weight:700;font-family:Impact,'Arial Narrow',sans-serif;display:flex;align-items:center;justify-content:center;gap:3px;}
+.slb2.f{color:var(--red);}
+.sinp{width:100%;background:var(--bg4);border:1px solid var(--bd);color:var(--t);font-size:14px;font-weight:600;padding:11px 3px;outline:none;text-align:center;font-family:'Courier New',monospace;border-radius:9px;transition:all 0.15s;min-height:44px;}
+.sinp::placeholder{color:var(--t4);font-size:10px;font-weight:400;}
+.sinp:focus{border-color:var(--g);background:#1a2418;box-shadow:0 0 0 3px rgba(95,179,122,0.15);}
+.sinp.hv{border-color:var(--bd2);}
+.sinp.pw{color:var(--os);border-color:var(--o);background:var(--obg);font-weight:700;}
+.sinp.pr{color:var(--gs);border-color:var(--g);background:var(--gbg);font-weight:700;}
+.prl{font-size:8px;text-align:center;margin-top:5px;font-weight:800;letter-spacing:1px;font-family:Impact,'Arial Narrow',sans-serif;padding:2px 3px;border-radius:3px;}
+.prl.w{color:var(--os);background:rgba(255,198,71,0.1);}
+.prl.r{color:var(--gs);background:rgba(95,179,122,0.1);}
+.toast{position:fixed;top:max(20px,env(safe-area-inset-top,20px));left:50%;transform:translateX(-50%) translateY(-100px);background:linear-gradient(135deg,var(--os),var(--o));color:#1a1200;padding:13px 24px;border-radius:50px;font-family:Impact,'Arial Narrow',sans-serif;font-size:16px;letter-spacing:2px;z-index:9999;white-space:nowrap;box-shadow:0 8px 30px rgba(255,198,71,0.5);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;gap:8px;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.rep{background:linear-gradient(135deg,var(--gs),var(--g));color:#062012;box-shadow:0 8px 30px rgba(95,179,122,0.5);}
+.logtip{padding:14px 16px;font-size:11px;color:var(--t3);text-align:center;line-height:1.7;}
+.trhdr{padding:18px 16px 10px;border-bottom:1px solid var(--bd);}
+.trtitle{font-family:Impact,'Arial Narrow',sans-serif;font-size:30px;letter-spacing:3px;line-height:1;}
+.trsub{font-size:12px;color:var(--t3);margin-top:5px;}
+.trctrl{display:flex;gap:7px;margin-top:12px;}
+.trflt{padding:7px 13px;border-radius:7px;background:var(--bg2);border:1px solid var(--bd);color:var(--t3);font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;font-family:inherit;}
+.trflt.on{background:var(--g);color:#0a1a0e;border-color:var(--g);}
+.sumbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding:14px 16px 8px;}
+.sumc{background:var(--bg2);border:1px solid var(--bd);border-radius:13px;padding:16px 8px;text-align:center;position:relative;overflow:hidden;}
+.sumc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sumc.a::before{background:var(--t2);}
+.sumc.b::before{background:var(--g);}
+.sumc.c::before{background:var(--o);}
+.snum{font-family:Impact,'Arial Narrow',sans-serif;font-size:30px;line-height:1;}
+.slbl3{font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-top:6px;font-weight:700;}
+.tcards{padding:6px 16px 18px;}
+.dslbl{font-family:Impact,'Arial Narrow',sans-serif;font-size:15px;letter-spacing:3px;text-transform:uppercase;padding:14px 0 7px;display:flex;align-items:center;gap:10px;}
+.dslbl::after{content:'';flex:1;height:1px;background:var(--bd);}
+.tc{background:var(--bg2);border-radius:14px;border:1px solid var(--bd);margin-bottom:10px;overflow:hidden;border-top-width:3px;}
+.tchdr{padding:13px 14px 11px;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;border-bottom:1px solid var(--bd);}
+.tcnm{font-family:Impact,'Arial Narrow',sans-serif;font-size:17px;letter-spacing:1px;flex:1;line-height:1.15;}
+.tbdgs{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.tbdg{font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;font-family:'Courier New',monospace;}
+.tbdg.w{background:var(--obg);color:var(--os);border:1px solid var(--obd);}
+.tbdg.r{background:var(--gbg);color:var(--gs);border:1px solid var(--gbd);}
+.twks{display:flex;overflow-x:auto;padding:10px 14px 12px;gap:5px;}
+.twks::-webkit-scrollbar{display:none;}
+.twk{flex-shrink:0;width:58px;min-height:62px;border-radius:9px;padding:7px 3px;text-align:center;border:1px solid var(--bd);background:var(--bg4);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.twk.em{background:rgba(0,0,0,0.3);border-color:#161610;}
+.twk.pw{background:var(--obg);border-color:var(--o);box-shadow:0 0 10px rgba(255,198,71,0.2);}
+.twk.pr{background:var(--gbg);border-color:var(--g);box-shadow:0 0 10px rgba(95,179,122,0.2);}
+.twl{font-size:9px;color:var(--t3);letter-spacing:1.5px;margin-bottom:3px;font-family:Impact,'Arial Narrow',sans-serif;}
+.twwt{font-family:'Courier New',monospace;font-size:13px;font-weight:700;line-height:1;}
+.twrp{font-size:10px;color:var(--t3);margin-top:2px;font-family:'Courier New',monospace;}
+.twst{font-size:8px;margin-top:2px;font-family:Impact,'Arial Narrow',sans-serif;}
+.twem{font-size:14px;color:var(--t4);margin-top:3px;}
+.tnd{font-size:12px;color:var(--t3);padding:13px 14px 15px;font-style:italic;text-align:center;}
+.safe{height:env(safe-area-inset-bottom,14px);}
+@media(max-width:375px){.wgrid{grid-template-columns:repeat(6,1fr);}.wbtn{font-size:15px;min-height:36px;}.exnm{font-size:18px;}.sinp{font-size:13px;}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast"></div>
+<script>
+const PROG=[
+  {id:'push',lb:'DAY 1',nm:'PUSH',sub:'Chest · Triceps · Traps',c:'#4a8a5e',ex:[
+    {id:'incline_press',nm:'DB Incline Chest Press',   s:4,tg:'6–10 reps', nt:'Main compound — priority lift'},
+    {id:'cable_fly',    nm:'Cable Fly / Pec Deck',     s:3,tg:'10–12 reps',nt:'Full stretch, squeeze at top'},
+    {id:'tri_pushdown', nm:'Triceps Pushdown',         s:3,tg:'10–12 reps',nt:'Single hand cable, elbows fixed'},
+    {id:'tri_overhead', nm:'Overhead Triceps Ext',     s:3,tg:'9–11 reps', nt:'Long head stretch, slow eccentric'},
+    {id:'shrug_d1',     nm:'Barbell / DB Shrug',       s:3,tg:'10–12 reps',nt:'Heavy, 3-sec hold at top',tr:1},
+  ]},
+  {id:'pull',lb:'DAY 2',nm:'PULL',sub:'Back · Biceps · Traps',c:'#3a7aa0',ex:[
+    {id:'lat_pull',  nm:'Pull-Ups / Lat Pulldown',    s:4,tg:'9 reps',    nt:'Full stretch at top'},
+    {id:'cable_row', nm:'Seated Cable Row',           s:3,tg:'8–10 reps', nt:'Drive elbows back, full contraction'},
+    {id:'shrug_d2',  nm:'Shrug + Upright Row',        s:3,tg:'10+10',     nt:'Superset — no rest between',tr:1},
+    {id:'ez_curl',   nm:'EZ-Bar / DB Curl',           s:3,tg:'7–10 reps', nt:'Supinate at top, strict form'},
+  ]},
+  {id:'sh',lb:'DAY 3',nm:'SHOULDERS + ARMS',sub:'All 3 Delt Heads · Tri · Bi',c:'#c87a3c',ex:[
+    {id:'sh_press',  nm:'Shoulder Press (Machine/DB)', s:4,tg:'8 reps',    nt:'Primary compound — heaviest lift'},
+    {id:'lat_raise', nm:'DB Lateral Raise',           s:3,tg:'10–12 reps',nt:'Lateral head — strict form'},
+    {id:'rear_fly',  nm:'Rear Delt Fly / Face Pull',  s:3,tg:'10–12 reps',nt:'Rear head — focus on contraction'},
+    {id:'skull',     nm:'Skull Crushers / Cable Ext', s:3,tg:'10 reps',   nt:'Full stretch at bottom'},
+    {id:'inc_curl',  nm:'EZ-Bar / Incline DB Curl',   s:3,tg:'8–10 reps', nt:'Upper arms pinned, long head'},
+  ]},
+  {id:'lg',lb:'DAY 4',nm:'LEGS + ABS',sub:'Quads · Hamstrings · Calves · Core',c:'#b88a3c',ex:[
+    {id:'leg_ss',    nm:'Leg Curl + Calf Raise',      s:3,tg:'10+10',     nt:'Superset — no rest between'},
+    {id:'leg_ext',   nm:'Leg Extension',              s:3,tg:'12–15 reps',nt:'High rep burnout last set'},
+    {id:'leg_press', nm:'Leg Press / Squat',          s:3,tg:'8–12 reps', nt:'Optional — skip if short on time'},
+    {id:'ab_crunch', nm:'Cable Crunch',               s:3,tg:'12–15 reps',nt:'Hips still, crunch with abs',ab:1},
+    {id:'ab_raise',  nm:'Hanging Leg Raise',          s:3,tg:'10–12 reps',nt:'Control the descent',ab:1},
+    {id:'ab_plank',  nm:'Plank / Ab Wheel',           s:3,tg:'30–45s',    nt:'Wks 1–4 plank, Wks 5+ rollout',ab:1},
+  ]},
+];
+const QI={1:{lb:'Q1',dt:'Jan–Mar',c:'#4a8a5e'},2:{lb:'Q2',dt:'Apr–Jun',c:'#3a7aa0'},3:{lb:'Q3',dt:'Jul–Sep',c:'#c87a3c'},4:{lb:'Q4',dt:'Oct–Dec',c:'#a05a8a'}};
+// Week 1 = Jan 1 2026 (Thursday). Each week = 7 days from Jan 1.
+const Y0=new Date(2026,0,1);
+function wkStart(w){const d=new Date(Y0);d.setDate(d.getDate()+(w-1)*7);return d;}
+function fmt(d){return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+function wkRange(w){const s=wkStart(w),e=new Date(s);e.setDate(e.getDate()+6);return fmt(s)+'–'+fmt(e);}
+function wkQ(w){return w<=13?1:w<=26?2:w<=39?3:4;}
+function qWks(q){return[[1,13],[14,26],[27,39],[40,52]][q-1];}
+function todayWk(){const n=new Date();if(n<Y0)return 1;return Math.min(52,Math.max(1,Math.floor((n-Y0)/(864e5*7))+1));}
+function parse(v){if(!v||!v.trim()||v==='—')return null;const m=v.match(/(\d+(?:\.\d+)?)\s*(?:kg)?\s*[xX×]\s*(\d+)/);return m?{w:parseFloat(m[1]),r:parseInt(m[2])}:null;}
+function bestOf(a){const p=a.map(parse).filter(Boolean);if(!p.length)return null;return p.reduce((b,c)=>c.w>b.w||(c.w===b.w&&c.r>b.r)?c:b);}
+function chkPR(cur,prior){if(!cur)return null;const b=bestOf(prior.filter(Boolean));if(!b)return null;if(cur.w>b.w)return{t:'WT',d:'+'+(+(cur.w-b.w).toFixed(2))+'kg'};if(cur.w===b.w&&cur.r>b.r){const n=cur.r-b.r;return{t:'REP',d:'+'+n+' rep'+(n>1?'s':'')};}return null;}
+const KEY='ironlog_v3_2026';
+const HIST={"1":{"incline_press":{"0":"28kg x7","1":"28kg x8","2":"28kg x8","3":"28kg x6"},"cable_fly":{"0":"17.5kg x8","1":"17.5kg x8","2":"17.5kg x8","3":"17.5kg x8"},"tri_pushdown":{"0":"10kg x8","1":"10kg x10","2":"10kg x10","3":"10kg x11"},"tri_overhead":{"0":"25kg x10","1":"25kg x10","2":"28kg x10","3":"28kg x10"},"lat_pull":{"0":"72kg x8","1":"72kg x8","2":"72kg x8","3":"72kg x9"},"cable_row":{"0":"72kg x10","1":"72kg x10","2":"72kg x10","3":"72kg x10"},"shrug_d1":{"0":"32kg x10","1":"32kg x10","2":"32kg x12","3":"32kg x12"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x7","3":"20kg x8"},"sh_press":{"0":"41.5kg x10","1":"41.5kg x10","2":"41.5kg x10","3":"41.5kg x10"},"lat_raise":{"0":"7.5kg x8","1":"7.5kg x8","2":"7.5kg x8","3":"7.5kg x8"},"rear_fly":{"0":"40kg x11","1":"40kg x11","2":"40kg x11"},"skull":{"0":"20kg x10","1":"20kg x10","2":"20kg x10","3":"20kg x10"},"inc_curl":{"0":"14kg x8","1":"14kg x9","2":"14kg x8","3":"14kg x7"},"leg_ext":{"0":"89kg x10","1":"89kg x10","2":"89kg x10","3":"89kg x10"},"leg_ss":{"0":"75kg x10","1":"75kg x10","2":"75kg x10","3":"75kg x11"}},"2":{"incline_press":{"0":"60kg x6","1":"60kg x6","2":"60kg x6","3":"60kg x5"},"cable_fly":{"0":"75kg x9","1":"75kg x9","2":"75kg x9","3":"75kg x9"},"tri_pushdown":{"0":"30kg x8","1":"30kg x8","2":"30kg x8","3":"30kg x9"},"tri_overhead":{"0":"24.5kg x9","1":"24.5kg x10","2":"24.5kg x10","3":"24.5kg x10"},"lat_pull":{"0":"72kg x8","1":"72kg x8","2":"72kg x8","3":"72kg x9"},"cable_row":{"0":"72kg x9","1":"72kg x10","2":"72kg x10","3":"72kg x10"},"shrug_d1":{"0":"28.75kg x10","1":"28.75kg x10","2":"28.75kg x10","3":"28.75kg x11"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x8"},"sh_press":{"0":"70kg x10","1":"80kg x10","2":"80kg x10","3":"80kg x9"},"lat_raise":{"0":"27.5kg x10","1":"27.5kg x10","2":"27.5kg x10","3":"27.5kg x10"},"rear_fly":{"0":"40kg x10","1":"40kg x11","2":"40kg x11"},"skull":{"0":"17.5kg x10","1":"20kg x10","2":"20kg x10","3":"20kg x10"},"inc_curl":{"0":"12.5kg x10","1":"12.5kg x10","2":"12.5kg x10","3":"12.5kg x10"},"leg_ext":{"0":"89kg x9","1":"89kg x9","2":"89kg x9","3":"89kg x11"},"leg_ss":{"0":"68kg x10","1":"75kg x10","2":"75kg x10","3":"75kg x10"}},"3":{"incline_press":{"0":"26kg x10","1":"28kg x8","2":"28kg x6","3":"28kg x4"},"cable_fly":{"0":"75kg x8","1":"75kg x8","2":"75kg x9","3":"75kg x8"},"tri_pushdown":{"0":"8.75kg x10","1":"8.75kg x10","2":"8.75kg x12","3":"8.75kg x12"},"tri_overhead":{"0":"23.75kg x11","1":"23.75kg x11","2":"23.75kg x10","3":"23.75kg x10"},"lat_pull":{"0":"70kg x8","1":"70kg x8","2":"70kg x9","3":"70kg x9"},"cable_row":{"0":"70kg x10","1":"70kg x10","2":"70kg x10","3":"70kg x10"},"shrug_d1":{"0":"60kg x10","1":"70kg x10","2":"70kg x10","3":"70kg x11"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x7"},"sh_press":{"0":"40kg x9","1":"40kg x9","2":"40kg x9","3":"40kg x8"},"lat_raise":{"0":"10kg x10","1":"10kg x10","2":"10kg x10","3":"10kg x10"},"rear_fly":{"0":"40kg x10","1":"40kg x10","2":"40kg x11"},"skull":{"0":"17.5kg x10","1":"17.5kg x10","2":"17.5kg x10","3":"17.5kg x10"},"inc_curl":{"0":"20kg x9","1":"20kg x9","2":"20kg x9","3":"20kg x10"},"leg_ext":{"0":"89kg x9","1":"89kg x9","2":"89kg x9","3":"89kg x11"},"leg_ss":{"0":"68kg x10","1":"75kg x10","2":"75kg x10","3":"75kg x10"}},"4":{"incline_press":{"0":"60kg x6","1":"60kg x6","2":"60kg x6","3":"60kg x6"},"cable_fly":{"0":"75kg x8","1":"75kg x8","2":"75kg x8","3":"75kg x8"},"tri_pushdown":{"0":"8.75kg x10","1":"8.75kg x10","2":"8.75kg x10","3":"8.75kg x10"},"tri_overhead":{"0":"23.75kg x10","1":"23.75kg x10","2":"23.75kg x10","3":"23.75kg x11"},"lat_pull":{"0":"67kg x8","1":"67kg x9","2":"67kg x9","3":"67kg x9"},"cable_row":{"0":"54kg x10","1":"68kg x8","2":"68kg x8","3":"68kg x9"},"shrug_d1":{"0":"21.25kg x12","2":"26.25kg x11","3":"26.25kg x11"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x6"},"sh_press":{"0":"39kg x9","1":"39kg x10","2":"39kg x10","3":"39kg x11"},"lat_raise":{"0":"10kg x9","1":"10kg x10","2":"10kg x10","3":"10kg x9"},"rear_fly":{"0":"40kg x10","1":"40kg x10","2":"40kg x10"},"skull":{"0":"15kg x10","1":"15kg x11","2":"15kg x11","3":"15kg x11"},"inc_curl":{"0":"12kg x9","1":"12kg x10","2":"12kg x10","3":"12kg x10"},"leg_ext":{"0":"82kg x10","1":"82kg x10","2":"82kg x11","3":"89kg x11"},"leg_ss":{"0":"67kg x8","1":"67kg x8","2":"67kg x8","3":"65kg x8"}},"5":{"incline_press":{"0":"55kg x6","1":"55kg x6","2":"55kg x6","3":"55kg x6"},"cable_fly":{"0":"15kg x9","1":"15kg x9","2":"15kg x9","3":"16kg x10"},"tri_pushdown":{"0":"7.5kg x10","1":"8.5kg x10","2":"8.5kg x10","3":"8.5kg x10"},"tri_overhead":{"0":"21.25kg x10","1":"23.75kg x10","2":"23.75kg x10","3":"23.75kg x11"},"lat_pull":{"0":"67kg x8","1":"67kg x8","2":"67kg x8","3":"67kg x9"},"cable_row":{"0":"67kg x9","1":"67kg x9","2":"67kg x9","3":"67kg x11"},"shrug_d1":{"0":"6.25kg x10","2":"6.25kg x10","3":"6.25kg x9"},"ez_curl":{"0":"20kg x10","1":"20kg x10","2":"20kg x10","3":"20kg x11"},"sh_press":{"0":"35kg x10","1":"35kg x10","2":"35kg x10","3":"35kg x10"},"lat_raise":{"0":"10kg x9","1":"10kg x9","2":"10kg x9","3":"10kg x9"},"rear_fly":{"0":"40kg x9","1":"40kg x9","2":"40kg x9"},"skull":{"0":"15kg x8","1":"15kg x8","2":"15kg x8","3":"15kg x9"},"inc_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x8"},"leg_ext":{"0":"80kg x10","1":"80kg x10","2":"80kg x11","3":"80kg x11"},"leg_ss":{"0":"65kg x8","1":"65kg x8","2":"65kg x8","3":"65kg x8"}},"6":{"incline_press":{"0":"60kg x5","1":"60kg x4","2":"50kg x6","3":"50kg x7"},"cable_fly":{"0":"68kg x10","1":"75kg x8","2":"75kg x8","3":"75kg x8"},"tri_pushdown":{"0":"7.5kg x10","1":"8.5kg x10","2":"8.5kg x10","3":"8.5kg x10"},"tri_overhead":{"0":"21.25kg x10","1":"21.25kg x10","2":"21.25kg x10","3":"21.25kg x11"},"lat_pull":{"0":"57kg x12","1":"67kg x8","2":"67kg x8","3":"67kg x9"},"cable_row":{"0":"67kg x9","1":"67kg x9","2":"67kg x9","3":"67kg x11"},"shrug_d1":{"0":"60kg x11","1":"60kg x11","2":"60kg x11","3":"60kg x12"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x10"},"sh_press":{"0":"35kg x10","1":"35kg x10","2":"35kg x10","3":"35kg x10"},"lat_raise":{"0":"10kg x10","1":"10kg x10","2":"10kg x10","3":"10kg x13"},"rear_fly":{"0":"40kg x8","1":"40kg x8","2":"40kg x8"},"skull":{"0":"15kg x8","1":"15kg x8","2":"15kg x8","3":"15kg x8"},"inc_curl":{"0":"10kg x10","1":"15kg x10","2":"15kg x10","3":"15kg x12"},"leg_ss":{"0":"65kg x8","1":"65kg x8","2":"65kg x8","3":"65kg x10"},"leg_ext":{"0":"80kg x10","1":"80kg x10","2":"80kg x10","3":"80kg x12"}},"7":{"incline_press":{"0":"28kg x7","1":"28kg x8","2":"28kg x8","3":"28kg x6"},"cable_fly":{"0":"17.5kg x8","1":"17.5kg x8","2":"17.5kg x8","3":"17.5kg x8"},"tri_pushdown":{"0":"10kg x8","1":"10kg x10","2":"10kg x10","3":"10kg x11"},"tri_overhead":{"0":"25kg x10","1":"25kg x10","2":"28kg x10","3":"28kg x10"},"lat_pull":{"0":"72kg x8","1":"72kg x8","2":"72kg x8","3":"72kg x9"},"cable_row":{"0":"72kg x10","1":"72kg x10","2":"72kg x10","3":"72kg x10"},"shrug_d1":{"0":"32kg x10","1":"32kg x10","2":"32kg x12","3":"32kg x12"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x7","3":"20kg x8"},"sh_press":{"0":"41.5kg x10","1":"41.5kg x10","2":"41.5kg x10","3":"41.5kg x10"},"lat_raise":{"0":"7.5kg x8","1":"7.5kg x8","2":"7.5kg x8","3":"7.5kg x8"},"rear_fly":{"0":"40kg x11","1":"40kg x11","2":"40kg x11"},"skull":{"0":"20kg x10","1":"20kg x10","2":"20kg x10","3":"20kg x10"},"inc_curl":{"0":"14kg x8","1":"14kg x9","2":"14kg x8","3":"14kg x7"},"leg_ext":{"0":"89kg x10","1":"89kg x10","2":"89kg x10","3":"89kg x10"},"leg_ss":{"0":"75kg x10","1":"75kg x10","2":"75kg x10","3":"75kg x11"}},"8":{"incline_press":{"0":"60kg x6","1":"60kg x6","2":"60kg x6","3":"60kg x4"},"cable_fly":{"0":"15kg x10","1":"17.5kg x10","2":"17.5kg x10","3":"17.5kg x10"},"tri_pushdown":{"0":"10kg x12","1":"10kg x12","2":"10kg x12","3":"10kg x10"},"tri_overhead":{"0":"24.5kg x12","1":"24.5kg x12","2":"24.5kg x12","3":"24.5kg x12"},"lat_pull":{"0":"72kg x8","1":"72kg x8","2":"72kg x9","3":"77kg x9"},"cable_row":{"0":"77kg x8","1":"77kg x9","2":"77kg x9","3":"77kg x9"},"shrug_d1":{"0":"50kg x12","1":"60kg x10","2":"60kg x10","3":"60kg x10"},"ez_curl":{"0":"20kg x10","1":"40kg x4","2":"30kg x8","3":"30kg x8"},"sh_press":{"0":"42.5kg x10","1":"42.5kg x10","2":"42.5kg x10","3":"42.5kg x8"},"lat_raise":{"0":"7.5kg x9","1":"7.5kg x9","2":"7.5kg x9","3":"7.5kg x9"},"rear_fly":{"0":"25kg x12","1":"31.25kg x10","2":"31.25kg x10","3":"31.25kg x10"},"skull":{"0":"20kg x10","1":"20kg x10","2":"20kg x10","3":"20kg x10"},"inc_curl":{"0":"15kg x8","1":"15kg x8","2":"15kg x8"},"leg_ext":{"0":"95kg x10","1":"95kg x10","2":"95kg x10","3":"95kg x10"},"leg_press":{"0":"40kg x10","1":"80kg x8","2":"80kg x8","3":"80kg x8"}},"9":{"incline_press":{"0":"60kg x6","1":"60kg x6","2":"60kg x6","3":"60kg x7"},"cable_fly":{"0":"17.5kg x10","1":"17.5kg x10","2":"17.5kg x10","3":"17.5kg x10"},"tri_pushdown":{"0":"10kg x12","1":"10kg x12","2":"10kg x12","3":"10kg x11"},"tri_overhead":{"0":"28kg x8","1":"28kg x8","2":"28kg x8","3":"28kg x8"},"lat_pull":{"0":"72.5kg x9","1":"72.5kg x9","2":"72.5kg x9","3":"72.5kg x9"},"cable_row":{"0":"80kg x8","1":"80kg x9","2":"80kg x9","3":"80kg x9"},"shrug_d1":{"0":"80kg x10","1":"80kg x10","2":"80kg x10","3":"80kg x10"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x7"},"sh_press":{"0":"46kg x8","1":"46kg x8","2":"46kg x8"},"lat_raise":{"0":"12kg x8","1":"12kg x8","2":"12kg x8","3":"12kg x8"},"rear_fly":{"0":"40kg x11","1":"40kg x11","2":"40kg x11","3":"40kg x11"},"skull":{"0":"20kg x10","1":"20kg x10","2":"20kg x10","3":"20kg x9"},"inc_curl":{"0":"16kg x8","1":"16kg x7","2":"16kg x8","3":"16kg x5"},"leg_press":{"0":"80kg x9","1":"80kg x9","2":"80kg x9","3":"80kg x9"},"leg_ss":{"0":"82.5kg x10","1":"82.5kg x10","2":"82.5kg x10","3":"82.5kg x10"}},"10":{"incline_press":{"0":"50kg x6","1":"50kg x6","2":"50kg x6","3":"50kg x6"},"cable_fly":{"0":"17.5kg x11","1":"17.5kg x11","2":"17.5kg x11","3":"17.5kg x10"},"tri_pushdown":{"0":"10kg x10","1":"10kg x12","2":"10kg x12","3":"10kg x12"},"lat_pull":{"0":"77kg x8","1":"77kg x8","2":"77kg x8","3":"77kg x8"},"cable_row":{"0":"79.5kg x8","1":"79.5kg x8","2":"79.5kg x8","3":"79.5kg x8"},"shrug_d1":{"0":"34kg x10","1":"34kg x11","2":"34kg x11","3":"34kg x11"},"ez_curl":{"0":"20kg x8","1":"20kg x8","2":"20kg x8","3":"20kg x8"},"sh_press":{"0":"46kg x8","1":"46kg x8","2":"46kg x8","3":"46kg x9"},"lat_raise":{"0":"7.5kg x10","1":"7.5kg x10","2":"7.5kg x10","3":"7.5kg x11"},"rear_fly":{"0":"40kg x12","1":"40kg x12","2":"40kg x12"},"skull":{"0":"20kg x10","1":"20kg x10","2":"20kg x11","3":"20kg x11"},"inc_curl":{"0":"16kg x8","1":"16kg x8","2":"16kg x7","3":"16kg x7"},"leg_ext":{"0":"80kg x10","1":"80kg x10","2":"80kg x10","3":"80kg x10"}},"11":{"incline_press":{"0":"60kg x6","1":"60kg x7","2":"60kg x6","3":"60kg x5"},"cable_fly":{"0":"17.5kg x11","1":"17.5kg x11","2":"17.5kg x11","3":"17.5kg x12"},"tri_pushdown":{"0":"10kg x12","1":"12.5kg x8","2":"12.5kg x8","3":"12.5kg x8"},"tri_overhead":{"0":"28.75kg x10","1":"28.75kg x10","2":"28.75kg x10","3":"28.75kg x10"},"lat_pull":{"0":"77kg x8","1":"77kg x8","2":"77kg x8","3":"77kg x8"},"cable_row":{"0":"79.5kg x9","1":"79.5kg x9","2":"79.5kg x9","3":"79.5kg x10"},"shrug_d1":{"0":"38kg x10","1":"38kg x11","2":"38kg x10","3":"38kg x10"},"ez_curl":{"0":"20kg x9","1":"20kg x9","2":"20kg x9","3":"20kg x8"},"sh_press":{"0":"53kg x8","1":"53kg x8","2":"53kg x8","3":"53kg x8"},"lat_raise":{"0":"8.75kg x9","1":"8.75kg x9","2":"8.75kg x9","3":"8.75kg x9"},"rear_fly":{"0":"47kg x9","1":"47kg x9","2":"47kg x9"},"skull":{"0":"20kg x10","1":"20kg x12","2":"20kg x12","3":"20kg x12"},"inc_curl":{"0":"16kg x8","1":"16kg x8","2":"16kg x8","3":"16kg x8"},"leg_ext":{"0":"100kg x10","1":"100kg x10","2":"100kg x10","3":"100kg x10"},"leg_ss":{"0":"80kg x10","1":"80kg x10","2":"80kg x10","3":"80kg x10"}},"12":{"incline_press":{"0":"32kg x6","1":"32kg x7","2":"32kg x7","3":"32kg x5"},"cable_fly":{"0":"17.5kg x11","1":"17.5kg x11","2":"17.5kg x10","3":"17.5kg x6"},"tri_pushdown":{"0":"24.5kg x12","1":"28kg x8","2":"28kg x9","3":"28kg x9"},"tri_overhead":{"0":"28kg x7","1":"28kg x9","2":"28kg x10","3":"28kg x10"},"lat_pull":{"0":"77kg x8","1":"77kg x8","2":"77kg x8","3":"77kg x9"},"cable_row":{"0":"100kg x9","1":"110kg x8","2":"110kg x8","3":"110kg x10"},"shrug_d1":{"0":"34kg x10","1":"38kg x9","2":"38kg x9","3":"38kg x9"},"ez_curl":{"0":"20kg x9","1":"20kg x9","2":"20kg x9","3":"20kg x8"},"sh_press":{"0":"53kg x8","1":"53kg x8","2":"53kg x8","3":"53kg x7"},"lat_raise":{"0":"10kg x6","1":"10kg x8","2":"10kg x8","3":"10kg x9"},"rear_fly":{"0":"47kg x9","1":"47kg x9","2":"47kg x9"},"skull":{"0":"20kg x11","1":"20kg x11","2":"20kg x11","3":"20kg x12"},"inc_curl":{"0":"16kg x8","1":"16kg x8","2":"16kg x8","3":"16kg x8"},"leg_ss":{"0":"60kg x8","1":"60kg x10","2":"60kg x10"},"leg_ext":{"0":"103kg x10","1":"103kg x10","2":"103kg x10"}},"13":{"incline_press":{"0":"60kg x6","1":"60kg x7","2":"60kg x7","3":"60kg x6"},"cable_fly":{"0":"75kg x10","1":"77.5kg x9","2":"77.5kg x7","3":"77.5kg x7"},"tri_pushdown":{"0":"28kg x9","1":"28kg x9","2":"28kg x9","3":"28kg x8"},"tri_overhead":{"0":"28kg x10","1":"28kg x10","2":"28kg x10"},"lat_pull":{"0":"77kg x8","1":"77kg x9","2":"77kg x9","3":"77kg x9"},"cable_row":{"0":"120kg x8","1":"120kg x8","2":"120kg x8","3":"120kg x9"},"shrug_d1":{"0":"38kg x10","1":"38kg x10","2":"38kg x10"},"ez_curl":{"0":"20kg x9","1":"20kg x9","2":"20kg x9","3":"20kg x9"},"sh_press":{"0":"53kg x8","1":"53kg x8","2":"53kg x9","3":"53kg x9"},"lat_raise":{"0":"10kg x10","1":"10kg x10","2":"10kg x8","3":"10kg x9"},"rear_fly":{"0":"47kg x9","1":"47kg x9","2":"47kg x9"},"skull":{"0":"16kg x8","1":"16kg x8","2":"16kg x8","3":"16kg x8"},"inc_curl":{"0":"22.5kg x11","1":"22.5kg x11","2":"22.5kg x10","3":"22.5kg x10"},"leg_ss":{"0":"82.5kg x10","1":"82.5kg x11","2":"87.5kg x10","3":"90kg x10"},"leg_ext":{"0":"100kg x10","1":"100kg x10","2":"102.5kg x10","3":"102.5kg x10"}},"14":{"incline_press":{"0":"32kg x6","1":"32kg x7","2":"32kg x7","3":"32kg x6"},"cable_fly":{"0":"77.5kg x9","1":"77.5kg x9"},"tri_pushdown":{"0":"28.75kg x12","1":"28.75kg x12","2":"31.25kg x10","3":"31.25kg x10"},"tri_overhead":{"0":"28.75kg x6","1":"28.75kg x7","2":"28.75kg x6","3":"28.75kg x5"},"lat_pull":{"0":"75kg x8","1":"78.5kg x8","2":"78.5kg x8","3":"78.5kg x8"},"cable_row":{"0":"120kg x8","1":"120kg x8","2":"120kg x8","3":"120kg x8"},"shrug_d1":{"0":"40kg x9","1":"40kg x10","2":"40kg x10","3":"40kg x10"},"ez_curl":{"0":"20kg x9","1":"20kg x9","2":"20kg x9","3":"20kg x9"}},"15":{"incline_press":{"0":"32kg x6","1":"32kg x6","2":"32kg x6","3":"32kg x6"},"cable_fly":{"0":"21.25kg x9","1":"21.25kg x11","2":"21.25kg x10","3":"21.25kg x10"},"tri_pushdown":{"0":"28kg x11","1":"30.5kg x10","2":"30.5kg x10","3":"30.5kg x8"},"tri_overhead":{"0":"31.5kg x6","1":"30.5kg x9","2":"30.5kg x9","3":"30.5kg x7"},"lat_pull":{"0":"79.5kg x9","1":"79.5kg x9","2":"79.5kg x9","3":"79.5kg x9"},"cable_row":{"0":"120kg x8","1":"120kg x8","2":"120kg x8","3":"120kg x8"},"shrug_d1":{"0":"38kg x10","1":"38kg x10","2":"38kg x10","3":"38kg x10"},"ez_curl":{"0":"20kg x9","1":"20kg x10","2":"20kg x9","3":"20kg x9"},"sh_press":{"0":"55kg x7","1":"55kg x7","2":"55kg x7","3":"55kg x6"},"lat_raise":{"0":"11.25kg x8","1":"11.25kg x8","2":"11.25kg x8","3":"11.25kg x8"},"rear_fly":{"0":"44.5kg x9","1":"44.5kg x9","2":"47.5kg x10","3":"47.5kg x10"},"skull":{"0":"20kg x11","1":"22.5kg x10","2":"22.5kg x10","3":"22.5kg x11"},"inc_curl":{"0":"20kg x10","1":"20kg x10","2":"25kg x10","3":"25kg x10"},"leg_ss":{"0":"80kg x10","1":"90kg x10","2":"90kg x10","3":"90kg x10"},"leg_ext":{"0":"102.5kg x10","1":"102.5kg x10","2":"102.5kg x10"}},"16":{"incline_press":{"0":"32.5kg x6","1":"32.5kg x7","2":"32.5kg x7","3":"32.5kg x5"},"cable_fly":{"0":"17.5kg x10","1":"17.5kg x11","2":"18.75kg x10","3":"18.75kg x10"},"tri_pushdown":{"0":"35kg x10","1":"35kg x10","2":"35kg x10","3":"36.25kg x10"},"tri_overhead":{"0":"31.25kg x9","1":"31.25kg x10","2":"31.25kg x10","3":"31.25kg x11"},"lat_pull":{"0":"79.5kg x9","1":"79.5kg x9","2":"79.5kg x9","3":"79.5kg x9"},"cable_row":{"0":"120kg x8","1":"120kg x8","2":"120kg x8","3":"120kg x9"},"shrug_d1":{"0":"40kg x8","1":"40kg x8","2":"40kg x8","3":"40kg x8"},"ez_curl":{"0":"25kg x7","1":"25kg x7","2":"25kg x7","3":"25kg x7"},"sh_press":{"0":"55.5kg x8","1":"55.5kg x8","2":"55.5kg x8","3":"55.5kg x8"},"lat_raise":{"0":"11.25kg x8","1":"11.25kg x8","2":"11.25kg x8","3":"11.25kg x8"},"rear_fly":{"0":"47kg x10","1":"47kg x10","2":"47kg x10"},"skull":{"0":"22.5kg x10","1":"22.5kg x10","2":"22.5kg x10","3":"22.5kg x10"},"inc_curl":{"0":"16kg x8","1":"16kg x8","2":"16kg x8","3":"16kg x8"},"leg_ss":{"0":"90kg x10","1":"90kg x10","2":"90kg x10","3":"90kg x10"},"leg_ext":{"0":"102.5kg x10","1":"105kg x10","2":"105kg x10","3":"105kg x10"}},"17":{"incline_press":{"0":"32kg x6","1":"32kg x7","2":"32kg x7","3":"32kg x7"},"cable_fly":{"0":"17.5kg x11","1":"17.5kg x11","2":"17.5kg x12"},"tri_pushdown":{"0":"35kg x7","1":"31.5kg x10","2":"31.5kg x10","3":"31.5kg x10"},"tri_overhead":{"0":"31.5kg x7","1":"31.5kg x7","2":"31.5kg x10","3":"31.5kg x10"},"lat_pull":{"0":"79.5kg x9","1":"79.5kg x9","2":"79.5kg x9","3":"79.5kg x9"},"cable_row":{"0":"120kg x8","1":"120kg x8","2":"120kg x8","3":"120kg x8"},"shrug_d1":{"0":"38kg x8","1":"38kg x8","2":"38kg x8"},"ez_curl":{"0":"25kg x8","1":"25kg x8","2":"25kg x7","3":"25kg x7"},"leg_ss":{"0":"105kg x8"},"leg_ext":{"0":"105kg x8"}},"18":{"incline_press":{"0":"32kg x4","1":"32kg x7","2":"32kg x7","3":"32kg x6"},"tri_pushdown":{"0":"33.75kg x8","1":"33.75kg x10","3":"33.75kg x10"},"tri_overhead":{"0":"31.25kg x8","1":"31.25kg x7","2":"31.25kg x8","3":"31.25kg x7"},"lat_pull":{"0":"79.5kg x9","1":"79.5kg x9","2":"79.5kg x9","3":"79.5kg x10"},"cable_row":{"0":"120kg x8","1":"120kg x9","2":"120kg x9","3":"130kg x10"},"ez_curl":{"0":"25kg x8","1":"25kg x8","2":"25kg x8","3":"25kg x7"}}};
+let DATA={};
+try{const s=localStorage.getItem(KEY);DATA=s?JSON.parse(s):JSON.parse(JSON.stringify(HIST));if(!s)localStorage.setItem(KEY,JSON.stringify(DATA));}catch{DATA=JSON.parse(JSON.stringify(HIST));}
+function sv(){try{localStorage.setItem(KEY,JSON.stringify(DATA));}catch{}}
+function gv(w,id,si){return(DATA[w]&&DATA[w][id]&&DATA[w][id][si])||'';}
+function setV(w,id,si,v){if(!DATA[w])DATA[w]={};if(!DATA[w][id])DATA[w][id]={};if(v)DATA[w][id][si]=v;else{delete DATA[w][id][si];if(!Object.keys(DATA[w][id]).length)delete DATA[w][id];if(!Object.keys(DATA[w]).length)delete DATA[w];}sv();}
+function prV(w,id){const a=[];for(let i=1;i<w;i++)if(DATA[i]&&DATA[i][id])Object.values(DATA[i][id]).forEach(v=>a.push(v));return a;}
+function wkHas(w){if(!DATA[w])return false;for(const e of Object.values(DATA[w]))for(const v of Object.values(e))if(v)return true;return false;}
+function lastS(w,id,si){for(let i=w-1;i>=1;i--){const v=gv(i,id,si);if(v)return v;}return null;}
+const TWK=todayWk();
+let VW='log',CQ=wkQ(TWK),CW=TWK,CD=0,TS='q';
+function doCSV(){let c='Week,Dates,Day,Exercise,Set,Entry,Weight(kg),Reps\n';for(let w=1;w<=52;w++){const dr=wkRange(w);PROG.forEach(d=>d.ex.forEach(e=>{for(let s=0;s<e.s;s++){const v=gv(w,e.id,s),p=parse(v);c+=`"${w}","${dr}","${d.nm}","${e.nm}","${s+1}","${v}","${p?p.w:''}","${p?p.r:''}"\n`;}}))}const b=new Blob([c],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='ironlog_2026_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(u);}
+let TT=null;
+function showToast(t,d){const el=document.getElementById('toast');el.innerHTML=(t==='WT'?'🏆':'💪')+' '+(t==='WT'?'WEIGHT PR':'REP PR')+' '+d;el.className='toast'+(t==='REP'?' rep':'');requestAnimationFrame(()=>el.classList.add('show'));clearTimeout(TT);TT=setTimeout(()=>el.classList.remove('show'),2800);}
+function esc(s){return s?s.toString().replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'):''}
+function rdr(){
+  const app=document.getElementById('app');
+  app.innerHTML=`<div class="hdr"><div class="hdr-top"><div class="brand"><div class="bmark">IL</div><div><div class="btitle">IRON LOG</div><div class="bsub">2026 · Year View</div></div></div><button class="bkbtn" onclick="doCSV()">⬇ Backup</button></div><div class="nav"><button class="nbtn${VW==='log'?' on':''}" onclick="sw('log')">LOG</button><button class="nbtn${VW==='tr'?' on':''}" onclick="sw('tr')">TRACKER</button><button class="nbtn${VW==='yr'?' on':''}" onclick="sw('yr')">YEAR</button></div></div>`;
+  if(VW==='log')rLog(app);else if(VW==='tr')rTr(app);else rYr(app);
+  app.innerHTML+='<div class="safe"></div>';
+}
+function rQB(app){let h='<div class="qbar"><div class="qgrid">';[1,2,3,4].forEach(q=>{const i=QI[q],on=q===CQ?'on':'';h+=`<button class="qbtn q${q} ${on}" onclick="selQ(${q})">${i.lb}<span class="qdts">${i.dt}</span></button>`;});app.innerHTML+=h+'</div></div>';}
+function rLog(app){
+  rQB(app);
+  const[qs,qe]=qWks(CQ);
+  if(CW<qs||CW>qe)CW=qs;
+  const day=PROG[CD];
+  let wb='';
+  for(let w=qs;w<=qe;w++){const q=wkQ(w),on=w===CW?'on':'',hd=wkHas(w)?'hd':'',dim=w>TWK?'dim':'';wb+=`<button class="wbtn ${on}${on?' q'+q:''} ${hd} ${dim}" onclick="selW(${w})">${w}</button>`;}
+  app.innerHTML+=`<div class="wbar"><div class="slbl"><span>Week · ${QI[CQ].lb}</span><span class="winfo">${wkRange(CW)}</span></div><div class="wgrid">${wb}</div></div>`;
+  let dt='';PROG.forEach((d,i)=>{const on=i===CD,st=on?`background:${d.c};border-color:${d.c}`:'';dt+=`<button class="dtab${on?' on':''}" style="${st}" onclick="selD(${i})"><span class="dnum">${d.lb.split(' ')[1]}</span>${d.nm}</button>`;});
+  app.innerHTML+=`<div class="dtabs">${dt}</div>`;
+  const isCur=CW===TWK,isPast=CW<TWK,sc=isCur?'#5fb37a':isPast?'#a8a497':'#6a6660',sl=isCur?'CURRENT WEEK':isPast?'PAST WEEK':'UPCOMING',tip=isCur?"Beat last week's numbers":isPast?'Review your session':'Plan ahead';
+  app.innerHTML+=`<div class="pbanner"><div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${sc};border-radius:0 4px 4px 0"></div><div style="padding-left:8px"><div class="ptag" style="color:${sc}">${sl}</div><div class="pwk">WEEK ${String(CW).padStart(2,'0')} / 52 · ${wkRange(CW)}</div></div><div class="ptip">${tip}</div></div>`;
+  if(CW>1){const pw=CW-1;let rows='',any=false;day.ex.forEach(e=>{const vals=Array.from({length:e.s},(_,s)=>gv(pw,e.id,s)).filter(Boolean),nm=e.nm.split('/')[0].trim();if(!vals.length){rows+=`<div class="prow"><span class="pname">${nm}</span><span class="pbest" style="color:var(--t4)">—</span></div>`;return;}any=true;const b=bestOf(vals);rows+=`<div class="prow"><span class="pname">${nm}</span><span class="pbest">${b?b.w+'kg × '+b.r:vals[0]}</span></div>`;});app.innerHTML+=`<div class="pref"><div class="ptitle"><span>Week ${pw} · Best Sets</span><span style="color:var(--t4);font-size:10px">target to beat</span></div>${any?rows:'<div class="pempty">No data for week '+pw+'</div>'}</div>`;}
+  let cards='<div class="cards">',abs=false;
+  day.ex.forEach(e=>{
+    if(e.ab&&!abs){abs=true;cards+=`<div style="display:flex;align-items:center;gap:10px;margin:6px 0 2px"><div style="flex:1;height:1px;background:#3a2848"></div><div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:13px;letter-spacing:3px;color:#c8a8e8">ABS CIRCUIT</div><div style="flex:1;height:1px;background:#3a2848"></div></div>`;}
+    const cc=e.tr?'traps':e.ab?'abs':'',tbg=e.tr?'#1f3a26':e.ab?'#2a1a3a':day.c+'22',tc=e.tr?'#7dd49a':e.ab?'#c8a8e8':day.c,badge=e.tr?'<span class="btag tr">Traps</span>':e.ab?'<span class="btag ab">Abs</span>':'';
+    let sets='<div class="sgrid">';
+    for(let si=0;si<4;si++){
+      if(si>=e.s){sets+='<div class="scol dis">—</div>';continue;}
+      const val=gv(CW,e.id,si),p=parse(val),pr=p?chkPR(p,prV(CW,e.id)):null,fail=si===e.s-1,ic=pr?(pr.t==='WT'?'sinp pw':'sinp pr'):val?'sinp hv':'sinp',prl=pr?`<div class="prl ${pr.t==='WT'?'w':'r'}">★ ${pr.d}</div>`:'';
+      let ph='kg×reps';if(!val){const h=lastS(CW,e.id,si);if(h)ph=h;}
+      sets+=`<div class="scol${fail?' fail':''}"><div class="slb2${fail?' f':''}">S${si+1}${fail?' 🔥':''}</div><input class="${ic}" type="text" inputmode="text" autocomplete="off" placeholder="${esc(ph)}" value="${esc(val)}" onchange="hi('${e.id}',${si},this.value)" onfocus="this.select()"/>${prl}</div>`;
+    }
+    sets+='</div>';
+    cards+=`<div class="card ${cc}"><div class="chdr"><div class="exnm">${e.nm}</div><div class="exmeta"><span class="extgt" style="background:${tbg};color:${tc}">${e.s}× ${e.tg}</span>${badge}<span class="exnt">${e.nt}</span></div></div>${sets}</div>`;
+  });
+  app.innerHTML+=cards+'</div>';
+  app.innerHTML+='<div class="logtip">🔥 last set to failure · <span style="color:var(--os)">★</span> weight PR · <span style="color:var(--gs)">★</span> rep PR<br>Empty boxes show last week as a hint — type to log</div>';
+}
+function rTr(app){
+  app.innerHTML+=`<div class="trhdr"><div class="trtitle">PROGRESS</div><div class="trsub">Best set per week · All sets scanned · Scroll →</div><div class="trctrl"><button class="trflt${TS==='q'?' on':''}" onclick="setTS('q')">${QI[CQ].lb} Only</button><button class="trflt${TS==='y'?' on':''}" onclick="setTS('y')">Full Year</button></div></div>`;
+  if(TS==='q')rQB(app);
+  const[qs,qe]=TS==='q'?qWks(CQ):[1,52],wra=[];for(let w=qs;w<=qe;w++)wra.push(w);
+  let prs=0,imp=0,tr=0;
+  PROG.forEach(d=>d.ex.forEach(e=>{const wb=wra.map(w=>bestOf(Array.from({length:e.s},(_,s)=>gv(w,e.id,s))));const fl=wb.filter(Boolean);if(!fl.length)return;tr++;const f=fl[0],l=fl[fl.length-1];if(l.w>f.w||l.r>f.r)imp++;wb.forEach((wd,wi)=>{if(!wd)return;if(chkPR(wd,wb.slice(0,wi).filter(Boolean).map(p=>p.w+'kg x'+p.r)))prs++;});}));
+  app.innerHTML+=`<div class="sumbar"><div class="sumc a"><div class="snum" style="color:var(--t)">${tr}</div><div class="slbl3">Tracked</div></div><div class="sumc b"><div class="snum" style="color:var(--gs)">${imp}</div><div class="slbl3">Improved</div></div><div class="sumc c"><div class="snum" style="color:var(--os)">${prs}</div><div class="slbl3">PRs Hit</div></div></div><div class="tcards">`;
+  PROG.forEach(d=>{
+    app.innerHTML+=`<div class="dslbl" style="color:${d.c}">${d.lb} — ${d.nm}</div>`;
+    d.ex.forEach(e=>{
+      const wb=wra.map(w=>bestOf(Array.from({length:e.s},(_,s)=>gv(w,e.id,s)))),av=[];wra.forEach(w=>{for(let s=0;s<e.s;s++)av.push(gv(w,e.id,s));});
+      const ob=bestOf(av),bdg=ob?`<div class="tbdgs"><span class="tbdg w">${ob.w}kg</span><span class="tbdg r">×${ob.r}</span></div>`:'';
+      let wh='<div class="twks">';
+      wb.forEach((wd,wi)=>{const w=wra[wi],pr=wd?chkPR(wd,wb.slice(0,wi).filter(Boolean).map(p=>p.w+'kg x'+p.r)):null;if(!wd){wh+=`<div class="twk em"><div class="twl">W${w}</div><div class="twem">—</div></div>`;return;}const pc=pr?(pr.t==='WT'?'pw':'pr'):'',wc=pr?.t==='WT'?'var(--os)':pr?.t==='REP'?'var(--gs)':'var(--t)',rc=pr?(pr.t==='WT'?'#c8a000':'var(--g)'):'var(--t3)',st=pr?`<div class="twst" style="color:${pr.t==='WT'?'var(--os)':'var(--gs)'}">★${pr.d}</div>`:'';wh+=`<div class="twk ${pc}"><div class="twl">W${w}</div><div class="twwt" style="color:${wc}">${wd.w}</div><div class="twrp" style="color:${rc}">×${wd.r}</div>${st}</div>`;});
+      wh+='</div>';
+      app.innerHTML+=`<div class="tc" style="border-top-color:${d.c}"><div class="tchdr"><div class="tcnm">${e.nm}</div>${bdg}</div>${ob?wh:'<div class="tnd">No data in this range</div>'}</div>`;
+    });
+  });
+  app.innerHTML+='</div>';
+}
+function rYr(app){
+  app.innerHTML+=`<div class="trhdr"><div class="trtitle">YEAR REVIEW</div><div class="trsub">2026 · Quarter by quarter</div></div>`;
+  let h='<div style="padding:14px 16px 20px">';
+  for(let q=1;q<=4;q++){
+    const[qs,qe]=qWks(q),info=QI[q];let wl=0,prs=0,imp=0,tr=0;
+    for(let w=qs;w<=qe;w++)if(wkHas(w))wl++;
+    PROG.forEach(d=>d.ex.forEach(e=>{const wb=[];for(let w=qs;w<=qe;w++)wb.push(bestOf(Array.from({length:e.s},(_,s)=>gv(w,e.id,s))));const fl=wb.filter(Boolean);if(!fl.length)return;tr++;const f=fl[0],l=fl[fl.length-1];if(l.w>f.w||l.r>f.r)imp++;wb.forEach((wd,wi)=>{if(!wd)return;if(chkPR(wd,wb.slice(0,wi).filter(Boolean).map(p=>p.w+'kg x'+p.r)))prs++;});}));
+    const tot=qe-qs+1,pct=Math.round(wl/tot*100);
+    h+=`<div class="ycard" style="border-top:3px solid ${info.c}"><div class="yqhdr"><div><div class="yqtitle" style="color:${info.c}">${info.lb}</div><div class="yqdates">${info.dt} · Wks ${qs}–${qe}</div></div><button class="yvbtn" onclick="jmpQ(${q})">VIEW →</button></div><div class="ystats"><div class="ystat"><div class="ysnum" style="color:var(--t)">${wl}<span style="font-size:12px;color:var(--t3)">/${tot}</span></div><div class="yslbl">WEEKS</div></div><div class="ystat"><div class="ysnum" style="color:${info.c}">${pct}%</div><div class="yslbl">DONE</div></div><div class="ystat"><div class="ysnum" style="color:var(--gs)">${imp}</div><div class="yslbl">IMPROVED</div></div><div class="ystat"><div class="ysnum" style="color:var(--os)">${prs}</div><div class="yslbl">PRs</div></div></div></div>`;
+  }
+  let ywl=0,yprs=0,yimp=0,ytr=0;
+  for(let w=1;w<=52;w++)if(wkHas(w))ywl++;
+  PROG.forEach(d=>d.ex.forEach(e=>{const wb=[];for(let w=1;w<=52;w++)wb.push(bestOf(Array.from({length:e.s},(_,s)=>gv(w,e.id,s))));const fl=wb.filter(Boolean);if(!fl.length)return;ytr++;const f=fl[0],l=fl[fl.length-1];if(l.w>f.w||l.r>f.r)yimp++;wb.forEach((wd,wi)=>{if(!wd)return;if(chkPR(wd,wb.slice(0,wi).filter(Boolean).map(p=>p.w+'kg x'+p.r)))yprs++;});}));
+  h+=`<div style="background:linear-gradient(135deg,#1a2a14,#14140f);border:1px solid var(--gbd);border-radius:13px;padding:16px;margin-top:6px"><div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:18px;letter-spacing:3px;color:var(--gs);margin-bottom:12px;text-align:center">2026 TOTAL</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;text-align:center"><div><div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:26px;color:var(--t)">${ywl}</div><div style="font-size:9px;color:var(--t3);letter-spacing:2px;margin-top:3px;font-weight:700">WEEKS</div></div><div><div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:26px;color:var(--t)">${ytr}</div><div style="font-size:9px;color:var(--t3);letter-spacing:2px;margin-top:3px;font-weight:700">LIFTS</div></div><div><div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:26px;color:var(--gs)">${yimp}</div><div style="font-size:9px;color:var(--t3);letter-spacing:2px;margin-top:3px;font-weight:700">IMPROVED</div></div><div><div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:26px;color:var(--os)">${yprs}</div><div style="font-size:9px;color:var(--t3);letter-spacing:2px;margin-top:3px;font-weight:700">PRs</div></div></div></div></div>`;
+  document.getElementById('app').innerHTML+=h;
+}
+function hi(id,si,v){setV(CW,id,si,v.trim());const p=parse(v.trim());if(p){const pr=chkPR(p,prV(CW,id));if(pr)showToast(pr.t,pr.d);}rdr();}
+function sw(v){VW=v;rdr();window.scrollTo({top:0,behavior:'smooth'});}
+function selQ(q){CQ=q;const[qs,qe]=qWks(q);if(CW<qs||CW>qe)CW=qs;rdr();}
+function selW(w){CW=w;CQ=wkQ(w);rdr();}
+function selD(i){CD=i;rdr();}
+function setTS(s){TS=s;rdr();}
+function jmpQ(q){VW='log';selQ(q);}
+rdr();
+</script>
+</body>
+</html>
